@@ -35,6 +35,7 @@ mod x86_64;
 mod x86_win32;
 mod x86_win64;
 mod xtensa;
+mod z80;
 
 /// Different modes in which indirect arguments can be passed.
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug, StableHash)]
@@ -763,6 +764,7 @@ impl<'a, Ty> FnAbi<'a, Ty> {
             Arch::RiscV32 | Arch::RiscV64 => riscv::compute_abi_info(cx, self),
             Arch::Wasm32 | Arch::Wasm64 => wasm::compute_abi_info(cx, self),
             Arch::Bpf => bpf::compute_abi_info(cx, self),
+            Arch::Other(arch) if arch == "z80" => z80::compute_abi_info(cx, self),
             arch @ (Arch::SpirV | Arch::Other(_)) => {
                 panic!("no lowering implemented for {arch}")
             }
